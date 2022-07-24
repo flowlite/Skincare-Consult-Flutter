@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 
 class SkinAnalyzeSurveyPage extends StatefulWidget {
   const SkinAnalyzeSurveyPage({Key? key}) : super(key: key);
@@ -14,6 +15,24 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   int _currentPage = 1;
   PageController _pageController = PageController();
   ScrollPhysics? _pageScrollPhysics = NeverScrollableScrollPhysics();
+
+  int _ageRangeIndex = 0;
+  List<String> _ageRangeSurveyChoicesList = [
+    '18-24 Tahun',
+    '25-34 Tahun',
+    '35-44 Tahun',
+    '45-54 Tahun',
+    '55+ Tahun',
+  ];
+
+  int _skinConditionIndex = 0;
+  List<String> __skinConditionSurveyChoicesList = [
+    'Normal',
+    'Kering',
+    'Berminyak',
+    'Sensitif',
+    'Kombinasi',
+  ];
 
   @override
   void dispose() {
@@ -66,11 +85,16 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
                   });
                 },
                 children: [
-                  Container(color: Colors.blue),
-                  Container(color: Colors.red),
-                  Container(color: Colors.green),
-                  Container(color: Colors.yellow),
-                  Container(color: Colors.black),
+                  _ageSurveyPageWidget(),
+
+                  _skinProblemSurveyPageWidget(),
+
+                  _skinProblemSurveyPageWidget(),
+
+                  /// placeholder
+                  Container(color: Colors.white),
+                  Container(color: Colors.white),
+                  // Container(color: Colors.white),
                 ],
               ),
             ),
@@ -99,6 +123,114 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   void _onImagePickButtonClick(){
     // _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut);
   }
+
+  /// PAGE VIEW CHILDS WIDGETS
+  Widget _ageSurveyPageWidget(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Berapa Umur Kamu?",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: ChipsChoice<int>.single(
+              padding: EdgeInsets.zero,
+              wrapped: true,
+              value: _ageRangeIndex,
+              onChanged: (val) {
+                setState(() {
+                  _ageRangeIndex = val;
+                });
+                _onNextButtonClick();
+              },
+              choiceItems: C2Choice.listFrom<int, String>(
+                source: _ageRangeSurveyChoicesList,
+                value: (index, value) => index,
+                label: (index, value) => value,
+              ),
+              choiceActiveStyle: C2ChoiceStyle(
+                color: Colors.white,
+                backgroundColor: Color(Constants.colorPrimary),
+                borderColor: Color(Constants.colorPrimary),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+              choiceStyle: C2ChoiceStyle(
+                color: Color(Constants.colorPrimary),
+                backgroundColor: Colors.transparent,
+                borderShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    side: BorderSide(color: Color(Constants.colorPrimary))),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _skinProblemSurveyPageWidget(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Bagaimana kondisi kulit kamu?",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: ChipsChoice<int>.single(
+              padding: EdgeInsets.zero,
+              wrapped: true,
+              value: _skinConditionIndex,
+              onChanged: (val) {
+                setState(() {
+                  _skinConditionIndex = val;
+                });
+                _onNextButtonClick();
+              },
+              choiceItems: C2Choice.listFrom<int, String>(
+                source: __skinConditionSurveyChoicesList,
+                value: (index, value) => index,
+                label: (index, value) => value,
+              ),
+              choiceActiveStyle: C2ChoiceStyle(
+                color: Colors.white,
+                backgroundColor: Color(Constants.colorPrimary),
+                borderColor: Color(Constants.colorPrimary),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+              choiceStyle: C2ChoiceStyle(
+                color: Color(Constants.colorPrimary),
+                backgroundColor: Colors.transparent,
+                borderShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    side: BorderSide(color: Color(Constants.colorPrimary))),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   /// WIDGETS LIST
   Widget _actionWidgets(){

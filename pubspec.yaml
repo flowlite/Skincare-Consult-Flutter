@@ -58,6 +58,10 @@ dev_dependencies:
   step_progress_indicator: ^1.0.2
   cached_network_image: # ^3.2.1
   carousel_slider:
+  chips_choice_null_safety: ^2.0.6
+  image_picker: ^0.8.5+3
+
+  flutter_awesome_select: ^6.1.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
