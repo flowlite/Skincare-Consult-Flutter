@@ -55,8 +55,9 @@ dev_dependencies:
   dio: # ^4.0.6
 
   # widgets
-  carousel_slider:
+  step_progress_indicator: ^1.0.2
   cached_network_image: # ^3.2.1
+  carousel_slider:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

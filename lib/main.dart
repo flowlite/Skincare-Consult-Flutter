@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
 import 'package:skincare_consult_codetest_flutter/pages/skinAnalyzeStart/skin_analyze_start_page.dart';
+import 'package:skincare_consult_codetest_flutter/pages/skinAnalyzeSurvey/skin_analyze_survey_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
 class Routes {
   // static const String mainPage = "/main";
   static const String skinAnalyzeStartPage = "/skinAnalyzeStart";
+  static const String SkinAnalyzeSurveyPage = "/skinAnalyzeSurvey";
   // static const String loginPage = "/login";
   // static const String homePage = "/home";
 }
@@ -43,6 +45,7 @@ class Routes {
 Map<String, Widget Function(BuildContext)> routes = {
   // Routes.mainPage: (context) => MainPage(),
   Routes.skinAnalyzeStartPage: (context) => SkinAnalyzeStartPage(),
+  Routes.SkinAnalyzeSurveyPage: (context) => SkinAnalyzeSurveyPage(),
   // Routes.loginPage: (context) => LoginPage(),
   // Routes.homePage: (context) => HomePage()
 };

@@ -1,7 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
+import 'package:skincare_consult_codetest_flutter/main.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class SkinAnalyzeStartPage extends StatefulWidget {
   const SkinAnalyzeStartPage({Key? key}) : super(key: key);
@@ -11,9 +11,7 @@ class SkinAnalyzeStartPage extends StatefulWidget {
 }
 
 class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
-  String email = "";
-  String password = "";
-
+  int _currentPage = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +62,64 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
                 ),
 
                 /// slider indicator
-
                 Container(
                   margin: EdgeInsets.only(bottom: 40.0, top: 30.0),
-                  height: 10,
-                  width: 10,
-                  color: Color(Constants.colorPrimary),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 8, width: 8,
+                        decoration: BoxDecoration(
+                          color: Color(Constants.colorWhite93),
+                          shape: BoxShape.circle
+                        ),
+                      ),
+
+                      SizedBox(width: 12),
+
+                      Container(
+                        height: 8, width: 8,
+                        decoration: BoxDecoration(
+                          color: Color(Constants.colorPrimary),
+                          shape: BoxShape.circle
+                        ),
+                      ),
+
+                      SizedBox(width: 12),
+
+                      Container(
+                        height: 8, width: 8,
+                        decoration: BoxDecoration(
+                          color: Color(Constants.colorWhite93),
+                          shape: BoxShape.circle
+                        ),
+                      )
+                    ],
+                  ),
                 ),
+
+                /// slider indicator
+                // Container(
+                //   margin: EdgeInsets.only(bottom: 40.0, top: 30.0),
+                //   child: StepProgressIndicator(
+                //
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     padding: 4.0,
+                //     currentStep: _currentPage.toInt(),
+                //     totalSteps: 3,
+                //     size: 10,
+                //     unselectedColor: Color(Constants.colorWhite93),
+                //     selectedColor: Color(Constants.colorPrimary),
+                //     customStep: (index, color, _) {
+                //       return Container(
+                //         decoration: BoxDecoration(
+                //             color: color,
+                //             shape: BoxShape.circle
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // )
 
                 /// action buttons
                 _actionWidget(),
@@ -99,7 +148,7 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
           borderRadius: BorderRadius.all(
               Radius.circular(6.0)),
           child: InkWell(
-          onTap: () { _goToPage(); },
+          onTap: () { _goToAnalzyaSurveyPage(); },
           child: _actionButton(),
         ),
       ),
@@ -150,7 +199,7 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
       ),
       centerTitle: true,
       title: Text(
-        "Analisa Kondisi Kulit Kamu",
+        "Skin Analyzer",
         style: TextStyle(
           color: Colors.white,
           fontSize: 18.0,
@@ -160,7 +209,8 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
     );
   }
 
-  _goToPage() async {
+  _goToAnalzyaSurveyPage() async {
+    Navigator.pushNamed(context, Routes.SkinAnalyzeSurveyPage);
     print("Go to next page");
   }
 }
