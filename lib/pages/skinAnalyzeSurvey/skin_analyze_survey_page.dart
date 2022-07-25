@@ -21,7 +21,7 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   PageController _pageController = PageController();
   ScrollPhysics? _pageScrollPhysics = NeverScrollableScrollPhysics();
 
-  String? _photoPath;
+  String _photoPath = "";
 
   int _ageRangeIndex = 0;
   List<String> _ageRangeSurveyChoicesList = [
@@ -145,7 +145,10 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
 
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (await File(photo?.path ?? "").exists()){
-      _photoPath = photo?.path;
+      _photoPath = photo?.path ?? "";
+
+      //  todo: (NEXT) JANGAN LUPA DI HAPUS
+      print(":: PATH :: ${_photoPath}");
 
       _saveImagePath();
       _goToNextPage();
@@ -156,10 +159,10 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
 
   _saveImagePath() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString(Constants.photoPath, _photoPath);
 
-    if(pref.containsKey(Constants.photoPath)){
-      pref.setString(_photoPath ?? "", "");
-    }
+    //  todo: (NEXT) JANGAN LUPA DI HAPUS
+    print(":: PATH :: ${_photoPath}");
   }
 
   /// PAGE VIEW CHILDS WIDGETS

@@ -6,6 +6,10 @@ class Constants {
   static const int colorGrey74 = 0xFFBDBDBD;
   static const int colorGrey42 = 0xFF6A6A6A;
 
+  static const int colorScorePerfect = 0xFF27AE60;
+  static const int colorScoreGood = 0xFFFAAF3B;
+  static const int colorScoreBad = 0xFFEB5757;
+
   static const String sharedPref = "sharedPref";
   static const String photoPath = "photoPath";
 

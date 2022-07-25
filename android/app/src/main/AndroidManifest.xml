@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.skincare.consult.codetest.skincare_consult_codetest_flutter">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="Skincare App"
         android:name="${applicationName}"

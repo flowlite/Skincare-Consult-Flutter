@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
 import 'package:skincare_consult_codetest_flutter/pages/skinAnalyzeResult/skin_analyze_result_page.dart';
 import 'package:skincare_consult_codetest_flutter/pages/skinAnalyzeStart/skin_analyze_start_page.dart';
@@ -15,6 +16,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /// to set all app pages to portrait only
+    WidgetsFlutterBinding.ensureInitialized();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
     return /*MultiProvider(
         providers: [
           Provider(create: (context) => PlacesStore(PlacesRepository())),
