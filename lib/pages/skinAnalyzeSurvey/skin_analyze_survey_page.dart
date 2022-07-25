@@ -25,13 +25,26 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
     '55+ Tahun',
   ];
 
-  int _skinConditionIndex = 0;
-  List<String> __skinConditionSurveyChoicesList = [
+  List<int> _skinConditionIndex = [0];
+  List<String> _skinConditionSurveyChoicesList = [
     'Normal',
     'Kering',
     'Berminyak',
     'Sensitif',
     'Kombinasi',
+  ];
+
+  List<int> _skinProblemIndex = [0];
+  List<String> _skinProblemSurveyChoicesList = [
+    'Garis halus & kerutan',
+    'Kulit kusam',
+    'Kemerahan',
+    'Pori-pori besar',
+    'Pigmentasi',
+    'Kulit Mengendur',
+    'Noda kulit',
+    'Mata bengkak',
+    'Dark spots',
   ];
 
   @override
@@ -87,14 +100,13 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
                 children: [
                   _ageSurveyPageWidget(),
 
-                  _skinProblemSurveyPageWidget(),
+                  _skinConditionSurveyPageWidget(),
 
                   _skinProblemSurveyPageWidget(),
 
-                  /// placeholder
-                  Container(color: Colors.white),
-                  Container(color: Colors.white),
-                  // Container(color: Colors.white),
+                  _dailyLocationSurveyPageWidget(),
+
+                  _getPhotosSurveyPageWidget(),
                 ],
               ),
             ),
@@ -121,7 +133,7 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   }
 
   void _onImagePickButtonClick(){
-    // _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+    //  todo: (NEXT) set image picker function here
   }
 
   /// PAGE VIEW CHILDS WIDGETS
@@ -151,10 +163,61 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
                 setState(() {
                   _ageRangeIndex = val;
                 });
-                _onNextButtonClick();
               },
               choiceItems: C2Choice.listFrom<int, String>(
                 source: _ageRangeSurveyChoicesList,
+                value: (index, value) => index,
+                label: (index, value) => value,
+              ),
+              choiceActiveStyle: C2ChoiceStyle(
+                color: Colors.white,
+                backgroundColor: Color(Constants.colorPrimary),
+                borderColor: Color(Constants.colorPrimary),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+              choiceStyle: C2ChoiceStyle(
+                color: Color(Constants.colorPrimary),
+                backgroundColor: Colors.transparent,
+                borderShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    side: BorderSide(color: Color(Constants.colorPrimary))),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _skinConditionSurveyPageWidget(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Bagaimana kondisi kulit kamu?",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: ChipsChoice<int>.multiple(
+              padding: EdgeInsets.zero,
+              wrapped: true,
+              value: _skinConditionIndex,
+              onChanged: (val) {
+                setState(() {
+                  _skinConditionIndex = val;
+                });
+              },
+              choiceItems: C2Choice.listFrom<int, String>(
+                source: _skinConditionSurveyChoicesList,
                 value: (index, value) => index,
                 label: (index, value) => value,
               ),
@@ -186,7 +249,7 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Bagaimana kondisi kulit kamu?",
+            "Apa masalah utama kulit kamu?",
             style: TextStyle(
               color: Colors.black,
               fontSize: 22.0,
@@ -196,18 +259,17 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
 
           Container(
             margin: EdgeInsets.only(top: 10.0),
-            child: ChipsChoice<int>.single(
+            child: ChipsChoice<int>.multiple(
               padding: EdgeInsets.zero,
               wrapped: true,
-              value: _skinConditionIndex,
+              value: _skinProblemIndex,
               onChanged: (val) {
                 setState(() {
-                  _skinConditionIndex = val;
+                  _skinProblemIndex = val;
                 });
-                _onNextButtonClick();
               },
               choiceItems: C2Choice.listFrom<int, String>(
-                source: __skinConditionSurveyChoicesList,
+                source: _skinProblemSurveyChoicesList,
                 value: (index, value) => index,
                 label: (index, value) => value,
               ),
@@ -218,6 +280,8 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
                 borderRadius: BorderRadius.all(Radius.circular(25)),
               ),
               choiceStyle: C2ChoiceStyle(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
                 color: Color(Constants.colorPrimary),
                 backgroundColor: Colors.transparent,
                 borderShape: RoundedRectangleBorder(
@@ -231,8 +295,159 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
     );
   }
 
+  Widget _dailyLocationSurveyPageWidget(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Dimana lokasi anda sering menghabiskan waktu?",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+
+          /// Location form dropdown
+          _locationWidget(),
+
+          /// location weather datas
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _weatherStatusWidget("UV Index 15", "assets/icons/icon-water-drops-yellow.png"),
+              _weatherStatusWidget("Humidity 20%", "assets/icons/icon-co2-cloud-yellow.png"),
+              _weatherStatusWidget("Pollution 20", "assets/icons/icon-brightness-yellow.png"),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  //  todo: (NEXT) need to readjust widgets he
+  Widget _getPhotosSurveyPageWidget(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Ambil foto selfie anda",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26.0,
+              fontWeight: FontWeight.w800,
+            ),
+            textAlign: TextAlign.center
+          ),
+
+          SizedBox(height: 10),
+
+          Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            style: TextStyle(
+              color: Colors.black,
+              // fontSize: 14.0,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center
+          ),
+
+          SizedBox(height: 15),
+
+          /// take photo illustration
+          Container(
+            margin: EdgeInsets.only(bottom: 20, top: 50),
+            child: Image.asset("assets/images/img_camera_flatline1.png",
+              height: 150.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          /// additional notice text
+          Text(
+            "Untuk hasil yang maksimal pastikan anda berada di tempat dengan pencahayaan yang cukup.",
+            style: TextStyle(
+              color: Colors.black,
+              // fontSize: 14.0,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center
+          )
+        ],
+      ),
+    );
+  }
+
 
   /// WIDGETS LIST
+
+  Widget _locationWidget(){
+    return Container(
+        margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+        decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.all(Radius.circular(10))
+        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 15),
+            child: Icon(Icons.location_on_rounded, color: Color(Constants.colorGrey74))
+          ),
+
+          Expanded(
+            child: Text(
+              "Bandung, Jawa Barat",
+              style: TextStyle(
+                color: Color(Constants.colorGrey42),
+                fontSize: 16.0,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _weatherStatusWidget(String content, String imagePath){
+    return Container(
+      child: Column(
+        children: [
+          // Icon(Icons.brightness_7_rounded, color: Colors.amber, size: 36,),
+
+          Image.asset(imagePath,
+            height: 34.0,
+            width: 34.0,
+            fit: BoxFit.cover,
+          ),
+
+          SizedBox(height: 15),
+
+          Text(
+            "${content}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
   Widget _actionWidgets(){
 
     return Container(

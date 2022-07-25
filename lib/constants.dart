@@ -1,6 +1,10 @@
 class Constants {
   static const int colorPrimary = 0xFF9C1F60;
+
   static const int colorWhite93 = 0xFFECECEC;
+
+  static const int colorGrey74 = 0xFFBDBDBD;
+  static const int colorGrey42 = 0xFF6A6A6A;
 
   static const String sharedPref = "sharedPref";
   static const String loggedEmail = "loggedEmail";
