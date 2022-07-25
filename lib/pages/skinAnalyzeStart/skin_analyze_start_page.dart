@@ -210,7 +210,7 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
   }
 
   _goToAnalzyaSurveyPage() async {
-    Navigator.pushNamed(context, Routes.skinAnalyzeResultPage);
+    Navigator.pushNamed(context, Routes.skinAnalyzeSurveyPage);
     print("Go to next page");
   }
 }
