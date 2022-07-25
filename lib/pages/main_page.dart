@@ -54,12 +54,12 @@ class _MainPageState extends State<MainPage> {
 
   _getSavedCredentials() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-
-    if(pref.containsKey(Constants.loggedEmail)
-        && pref.containsKey(Constants.password)){
-      email = pref.getString(Constants.loggedEmail) ?? "";
-      password = pref.getString(Constants.password) ?? "";
-    }
+    //
+    // if(pref.containsKey(Constants.loggedEmail)
+    //     && pref.containsKey(Constants.password)){
+    //   email = pref.getString(Constants.loggedEmail) ?? "";
+    //   password = pref.getString(Constants.password) ?? "";
+    // }
   }
 
   _goToPage() async {

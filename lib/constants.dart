@@ -7,9 +7,7 @@ class Constants {
   static const int colorGrey42 = 0xFF6A6A6A;
 
   static const String sharedPref = "sharedPref";
-  static const String loggedEmail = "loggedEmail";
-
-  static const String password = "password";
+  static const String photoPath = "photoPath";
 
   // static const String ageRange18_24 = "18-24";
   // static const String ageRange25_34 = "25-34";

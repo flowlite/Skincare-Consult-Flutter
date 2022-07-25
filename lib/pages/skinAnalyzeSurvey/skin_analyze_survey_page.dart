@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
+import 'package:skincare_consult_codetest_flutter/main.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SkinAnalyzeSurveyPage extends StatefulWidget {
   const SkinAnalyzeSurveyPage({Key? key}) : super(key: key);
@@ -15,6 +20,8 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   int _currentPage = 1;
   PageController _pageController = PageController();
   ScrollPhysics? _pageScrollPhysics = NeverScrollableScrollPhysics();
+
+  String? _photoPath;
 
   int _ageRangeIndex = 0;
   List<String> _ageRangeSurveyChoicesList = [
@@ -120,6 +127,7 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
     );
   }
 
+  /// TASKS
   void _onPreviousButtonClick() async {
     if (_currentPage <= 1) {
       _goToPreviousPage();
@@ -132,8 +140,26 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
     await _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut);
   }
 
-  void _onImagePickButtonClick(){
-    //  todo: (NEXT) set image picker function here
+  void _onImagePickButtonClick() async {
+    final ImagePicker _picker = ImagePicker();
+
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (await File(photo?.path ?? "").exists()){
+      _photoPath = photo?.path;
+
+      _saveImagePath();
+      _goToNextPage();
+    }
+
+    //  todo: (NEXT) LANJUT LAGI DISINI
+  }
+
+  _saveImagePath() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if(pref.containsKey(Constants.photoPath)){
+      pref.setString(_photoPath ?? "", "");
+    }
   }
 
   /// PAGE VIEW CHILDS WIDGETS
@@ -591,6 +617,6 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   }
 
   _goToNextPage() async {
-    print("Go to next page");
+    Navigator.pushNamed(context, Routes.skinAnalyzeSurveyPage);
   }
 }

@@ -1,20 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:skincare_consult_codetest_flutter/constants.dart';
 import 'package:skincare_consult_codetest_flutter/main.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SkinAnalyzeStartPage extends StatefulWidget {
-  const SkinAnalyzeStartPage({Key? key}) : super(key: key);
+class SkinAnalyzeResultPage extends StatefulWidget {
+  const SkinAnalyzeResultPage({Key? key}) : super(key: key);
 
   @override
-  State<SkinAnalyzeStartPage> createState() => _SkinAnalyzeStartPageState();
+  State<SkinAnalyzeResultPage> createState() => _SkinAnalyzeResultPageState();
 }
 
-class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
+class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
   int _currentPage = 2;
+
+  String _photoPath = "";
 
   @override
   Widget build(BuildContext context) {
+
+    _getPhotoPath();
+
+    File _photoFile = File("");
+    if (_photoPath != null && _photoPath.isNotEmpty) {
+      _photoFile = File(_photoPath);
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -22,7 +34,7 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
       body: Stack(
         children: [
           /// background images
-          Image.asset('assets/images/man_taking_selfie.png',
+          Image.file(_photoFile,
             height: double.infinity,
             width: double.infinity,
             fit: BoxFit.cover,
@@ -132,6 +144,16 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
     );
   }
 
+  /// TASKS
+  _getPhotoPath() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if(pref.containsKey(Constants.photoPath)){
+      _photoPath = pref.getString(Constants.photoPath) ?? "";
+    }
+  }
+
+  /// WIDGETS
   Widget _actionWidget(){
 
     return Container(
@@ -209,8 +231,10 @@ class _SkinAnalyzeStartPageState extends State<SkinAnalyzeStartPage> {
     );
   }
 
+
+  /// ROUTES
   _goToAnalzyaSurveyPage() async {
-    Navigator.pushNamed(context, Routes.skinAnalyzeResultPage);
+    Navigator.pushNamed(context, Routes.skinAnalyzeSurveyPage);
     print("Go to next page");
   }
 }
