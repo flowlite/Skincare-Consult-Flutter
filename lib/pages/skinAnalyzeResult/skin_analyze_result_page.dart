@@ -14,11 +14,20 @@ class SkinAnalyzeResultPage extends StatefulWidget {
 }
 
 class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
-  int _currentPage = 2;
 
   String _photoPath = "";
   File? _photoFile;
+  bool? _dataLoaded;
 
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _getSkinResult();
+      _showModalBottomDialog();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +90,7 @@ class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
       _photoPath = pref.getString(Constants.photoPath) ?? "";
     }
 
-    if (_photoPath != null && _photoPath.isNotEmpty) {
+    if (_photoFile == null && _photoPath != null && _photoPath.isNotEmpty) {
       setState(() {
         _photoFile = File(_photoPath);
         print(":: PHOTO PATH :: ${_photoPath}");
@@ -89,33 +98,45 @@ class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
     }
   }
 
-  //  todo: (NEXT) set this to automatically assigned without button press
   _showModalBottomDialog(){
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       enableDrag: true,
+      barrierColor: Colors.transparent,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
               topRight: Radius.circular(25)),
       ),
       builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.75,
-          child: Container(
+        if (_dataLoaded == true) {
+          return FractionallySizedBox(
+              heightFactor: 0.75,
+              child: Container(
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 20),
+                child: Column(
+                    children: [
+                        _bottomDialogHeader(75, Color(Constants.colorScoreGood)),
+
+                      /// result grid view
+                        Expanded(
+                          child: _skinSurveyGridView())
+                    ]
+                ),
+              ),
+          );
+        } else {    /*  _dataLoaded != true */
+          return Container(
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 20),
             child: Column(
-                children: [
-                  _bottomDialogHeader(75, Color(Constants.colorScoreGood)),
-
-                  /// result grid view
-                  Expanded(
-                    child: _skinSurveyGridView())
-                ]
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                  _bottomDialogHeaderLoading(),
+              ]
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }
@@ -303,12 +324,52 @@ class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
     );
   }
 
+  Widget _bottomDialogHeaderLoading(){
+
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      elevation: 1.0,
+      child: Container(
+        padding: EdgeInsets.only(left: 18, right: 18, bottom: 18, top: 18),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 65,
+              width: 65,
+              margin: EdgeInsets.only(right: 30.0),
+              child: CircularProgressIndicator(
+                color: Color(Constants.colorPrimary),
+                strokeWidth: 12.0,
+              ),
+            ),
+
+            Flexible(
+              fit: FlexFit.loose,
+              child: Text(
+                "Calculating your skin score...",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+                maxLines: 3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _actionWidget(){
 
     return Container(
         padding: EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 20),
         decoration: BoxDecoration(
-          //  todo: (NEXT) remove decoration after automatic bottomsheet popup
         color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25.0),
@@ -320,7 +381,7 @@ class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
           borderRadius: BorderRadius.all(
               Radius.circular(6.0)),
           child: InkWell(
-          onTap: () { _showDialogBottom(); },
+          onTap: () { _showModalBottomDialog(); },
           child: _actionButton(),
         ),
       ),
@@ -401,7 +462,16 @@ class _SkinAnalyzeResultPageState extends State<SkinAnalyzeResultPage> {
 
 
   /// ROUTES
-  _showDialogBottom() {
-    _showModalBottomDialog();
+  _getSkinResult() {
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      setState(() {
+        _dataLoaded ??= true;
+      });
+
+      /// dismiss bottom sheet
+      Navigator.pop(context);
+
+      _showModalBottomDialog();
+    });
   }
 }

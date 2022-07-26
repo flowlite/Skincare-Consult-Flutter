@@ -141,28 +141,21 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
   }
 
   void _onImagePickButtonClick() async {
+    /// go to library's camera page
     final ImagePicker _picker = ImagePicker();
 
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (await File(photo?.path ?? "").exists()){
       _photoPath = photo?.path ?? "";
 
-      //  todo: (NEXT) JANGAN LUPA DI HAPUS
-      print(":: PATH :: ${_photoPath}");
-
       _saveImagePath();
       _goToNextPage();
     }
-
-    //  todo: (NEXT) LANJUT LAGI DISINI
   }
 
   _saveImagePath() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString(Constants.photoPath, _photoPath);
-
-    //  todo: (NEXT) JANGAN LUPA DI HAPUS
-    print(":: PATH :: ${_photoPath}");
   }
 
   /// PAGE VIEW CHILDS WIDGETS
@@ -417,6 +410,8 @@ class _SkinAnalyzeSurveyPageState extends State<SkinAnalyzeSurveyPage> {
 
   /// WIDGETS LIST
 
+  //  todo: (NEXT) SET DROPDOWN CHOICES
+  //  todo: AND ASSIGN PROVIDER & LOCAL PERSISTANCE
   Widget _locationWidget(){
     return Container(
         margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
