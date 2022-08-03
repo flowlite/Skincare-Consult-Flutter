@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id" : 1,
+      "name" : "Jakarta, DKI Jakarta",
+      "uvIndex" : 15,
+      "humidity" : 20,
+      "pollution" : 20
+    },
+    {
+      "id" : 2,
+      "name" : "Bandung, Jawa Barat",
+      "uvIndex" : 25,
+      "humidity" : 30,
+      "pollution" : 30
+    },
+    {
+      "id" : 3,
+      "name" : "Medan, Sumatera Utara",
+      "uvIndex" : 20,
+      "humidity" : 17,
+      "pollution" : 28
+    }
+  ]
+}
