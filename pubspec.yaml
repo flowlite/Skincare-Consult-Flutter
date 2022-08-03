@@ -39,7 +39,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  shared_preferences:
   # state management
   provider:
   mobx:
@@ -48,6 +47,10 @@ dev_dependencies:
   # json
   json_annotation:
   json_serializable:
+
+  # local databases
+  sqflite: # ^2.0.3
+  shared_preferences:
 
   # network
   url_launcher:
